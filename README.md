@@ -12,7 +12,7 @@ Oskar Dobrowolski - 40664478@live.napier.ac.uk
 
 Reece Lockhart - 40655712@live.napier.ac.uk 
 
-Patryk Torzecki - 40661748@live.napie.ac.uk 
+Patryk Torzecki - 40661748@live.napier.ac.uk 
 
 Adam McQuade - 40654226@live.napier.ac.uk 
 
