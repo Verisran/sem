@@ -8,13 +8,13 @@ Module Leader [Dr. Andreas Steyvn](a.steyven@napier.ac.uk)
 [Module repo](https://github.com/edinburgh-napier/SET08103)
 
 ## Group 33 members
-[Oskar Dobrowolski](40664478@live.napier.ac.uk) 
+Oskar Dobrowolski - 40664478@live.napier.ac.uk
 
-[Reece Lockhart](40655712@live.napier.ac.uk) 
+Reece Lockhart - 40655712@live.napier.ac.uk 
 
-[Patryk Torzecki](40661748@live.napie.ac.uk) 
+Patryk Torzecki - 40661748@live.napie.ac.uk 
 
-[Adam McQuade](40654226@live.napier.ac.uk) 
+Adam McQuade - 40654226@live.napier.ac.uk 
 
 
 ## Statuses
