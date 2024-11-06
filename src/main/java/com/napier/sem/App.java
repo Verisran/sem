@@ -28,13 +28,11 @@ public class App
             try
             {
                 // Wait a bit for db to start
-                Thread.sleep(30000);
+                // NOTE FROM OD: reduced thread.sleep as a test, can be kept to stop the app from spamming us with connection attempts, takes about 18 retries on my system
+                Thread.sleep(10000);
                 // Connect to database
                 con = DriverManager.getConnection("jdbc:mysql://db:3306/world?useSSL=false", "root", "world");
                 System.out.println("Successfully connected");
-                // Wait a bit
-                Thread.sleep(10000);
-                // Exit for loop
                 break;
             }
             catch (SQLException sqle)
