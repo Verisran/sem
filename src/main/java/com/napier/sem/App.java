@@ -9,7 +9,8 @@ import java.util.Scanner;
 public class App
 {
     Scanner sc = new Scanner(System.in);
-    //main of app
+
+    //==================================MAIN==================================\\
     public static void main(String[] args)
     {
         App app = new App();
@@ -34,8 +35,6 @@ public class App
         if(con == null){return;}
         app.menu(con);
 
-        Scanner scan = new Scanner(System.in);
-        int sel = Integer.parseInt(scan.nextLine());
 
         try {
             // Close connection
@@ -45,11 +44,14 @@ public class App
             }
     }
 
+
+    //====================================FUNCTIONS====================================\\
+
     public void menu(Connection con) {
         boolean exit = false;
-        int selection = 1; //temp
         while (!exit)
         {
+            int selection;
             //selection message, will be shown each time there is a selection to be made
             System.out.println(
                     "\n\t---\tplease make the following selections\t---"
@@ -58,18 +60,17 @@ public class App
                             + "\n5 - reports\t 0 - quit\n\n"
             );
             System.out.print("> ");
-            System.out.println(System.in);
+            selection = getMenuInput();
             switch (selection) {
                 case 1: // basic population queries
 
-                    System.out.println("\n\t>>>1\t basic population queries selected..."
+                    System.out.println("\n>>> 1\t basic population queries selected..."
                             + "\n 1 - Population of the world.\t 2 - Population of a Continent"
                             + "\n 3 - Population of a region. \t 4 - Population of a country"
                             + "\n 5 - population of a city"
                     );
-                    int sndSelection = 1;
 
-                    switch (sndSelection) {
+                    switch (getMenuInput()) {
                         case 1:
                             try {
                                 ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country");
@@ -139,6 +140,7 @@ public class App
             }
         }
     }
+    //============================================================================\\
 
     public Connection connect(String location, int delay) {
         try {
@@ -177,7 +179,13 @@ public class App
         return null;
     }
 
-    private ResultSet queryHelper(Connection con, String query_stmt) {
+    private static int getMenuInput()
+    {
+        Scanner scan = new Scanner(System.in);
+        return Integer.parseInt((scan.nextLine()));
+    }
+
+    public ResultSet queryHelper(Connection con, String query_stmt) {
         Statement stmnt = null;
         try {
             stmnt = con.createStatement();
