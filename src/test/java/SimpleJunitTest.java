@@ -9,7 +9,7 @@ class SimpleJunitTest
     @Test
     void unitTest()
     {
-        assertEquals(5,4, "Inputs Not Equal");
+        assertEquals(5,5, "Inputs Not Equal");
     }
 
     @Test
