@@ -1,4 +1,4 @@
 FROM openjdk:latest
 COPY ./target/seMethods.jar /tmp
 WORKDIR /tmp
-ENTRYPOINT ["java", "-jar", "seMethods.jar", "db:33060", "10000"]
+ENTRYPOINT ["java", "-jar", "seMethods.jar", "db:3306", "10000"]

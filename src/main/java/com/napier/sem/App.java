@@ -19,7 +19,7 @@ public class App
         int delay;
         if(args.length < 1)
         {
-            location ="localhost:3306";
+            location ="localhost:33060";
             delay = 10000;
         }
         else
@@ -27,13 +27,10 @@ public class App
             location = args[0];
             delay = Integer.parseInt(args[1]);
         }
-
         Connection con = app.connect(location, delay);
-        if(con == null){return;}
-
-        app.menu(con);
-
         System.out.println("notice: selection is wip and certain queries don't work.\n\n\n---\tWELCOME TO THE DATABASE INTERFACE!\t---");
+        if(con == null){return;}
+        app.menu(con);
 
         Scanner scan = new Scanner(System.in);
         int sel = Integer.parseInt(scan.nextLine());
@@ -141,8 +138,9 @@ public class App
                     // Wait a bit for db to start
                     Thread.sleep(delay);
                 }
+                //jdbc:mysql://docker-mysql/database?autoReconnect=true&useSSL=false
                 // Connect to database
-                Connection con = DriverManager.getConnection("jdbc:mysql://db:3306/world?useSSL=false", "root", "world");
+                Connection con = DriverManager.getConnection("jdbc:mysql://" + location + "/world?allowPublicKeyRetrieval=true&useSSL=false", "root", "world");
                 System.out.println("Successfully connected");
                 return con;
             }
