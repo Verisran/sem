@@ -1,28 +1,29 @@
+import com.napier.sem.App;
 import org.junit.jupiter.api.*;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleJunitTest
 {
     //assert takes in 3 params: expected result, actual result, message when failed
+    App app = new App();
+    Connection con = app.connect("localhost:33060", 8000);
 
-    @Test
+
+    @Test   //Connection Test
     void unitTest()
     {
-        assertEquals(5,5, "Inputs Not Equal");
+        assertNotNull(con, "Connection failed.");
     }
 
     @Test
-    void unitTest2()
+    void unitTest2() throws SQLException //Table Select Test
     {
-        int[] a = {1,4,5};
-        int[] b = {1,4,5};
-        assertArrayEquals(a,b, "Arrays are Not Equal");
-    }
-
-    @Test
-    void unitTest3()
-    {
-        assertTrue(5 == 5, "Inputs Not Equal");
+        ResultSet tables = app.queryHelper(con, "SELECT * FROM country");
+        assertTrue(tables.next());
     }
 }
