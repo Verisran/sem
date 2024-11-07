@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class App
 {
+    Scanner sc = new Scanner(System.in);
     //main of app
     public static void main(String[] args)
     {
@@ -45,7 +46,7 @@ public class App
 
     public void menu(Connection con) {
         boolean exit = false;
-        int selection = 0; //temp
+        int selection = 1; //temp
         while (!exit)
         {
             //selection message, will be shown each time there is a selection to be made
@@ -56,13 +57,33 @@ public class App
                             + "\n5 - reports\t 0 - quit\n\n"
             );
             System.out.print("> ");
+            System.out.println(System.in);
             switch (selection) {
                 case 1: // basic population queries
+
                     System.out.println("\n\t>>>1\t basic population queries selected..."
                             + "\n 1 - Population of the world.\t 2 - Population of a Continent"
                             + "\n 3 - Population of a region. \t 4 - Population of a country"
                             + "\n 5 - population of a city"
                     );
+                    int sndSelection = 1;
+
+                    switch (sndSelection) {
+                        case 1:
+                            try {
+                                Statement stmnt = con.createStatement();
+                                String sqlstmnt = "SELECT SUM(Population) FROM country";
+                                ResultSet result = stmnt.executeQuery(sqlstmnt);
+                                if (result.next()) {
+                                    long pop = result.getLong("SUM(Population)");
+                                    System.out.println("\n\npopulation of the world is: " + pop + " people\n\n");
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            exit = true;
+                            break;
+                    }
                     break;
 
                 case 2: // all x in y
