@@ -30,6 +30,7 @@ public class App
         }
         Connection con = app.connect(location, delay);
         System.out.println("notice: selection is wip and certain queries don't work.\n\n\n---\tWELCOME TO THE DATABASE INTERFACE!\t---");
+
         if(con == null){return;}
         app.menu(con);
 
@@ -71,9 +72,7 @@ public class App
                     switch (sndSelection) {
                         case 1:
                             try {
-                                Statement stmnt = con.createStatement();
-                                String sqlstmnt = "SELECT SUM(Population) FROM country";
-                                ResultSet result = stmnt.executeQuery(sqlstmnt);
+                                ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country");
                                 if (result.next()) {
                                     long pop = result.getLong("SUM(Population)");
                                     System.out.println("\n\npopulation of the world is: " + pop + " people\n\n");
@@ -176,5 +175,20 @@ public class App
             }
         }
         return null;
+    }
+
+    private ResultSet queryHelper(Connection con, String query_stmt) {
+        Statement stmnt = null;
+        try {
+            stmnt = con.createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            return stmnt.executeQuery(query_stmt);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
