@@ -168,7 +168,7 @@ public class App
                     {
                         case 1: // all countries in the world
                             try {
-                                ResultSet result = queryHelper(con, "SELECT Name FROM country ORDER BY Name DESC");
+                                ResultSet result = queryHelper(con, "SELECT Name, Population FROM country ORDER BY Population DESC");
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
@@ -180,7 +180,7 @@ public class App
                         case 2: // all countries in a continent
                             try {
                                 String continent = getInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM country WHERE Continent = '" + continent + "' ORDER BY Name DESC");
+                                ResultSet result = queryHelper(con, "SELECT Name, Population FROM country WHERE Continent = '" + continent + "' ORDER BY Population DESC");
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
@@ -193,7 +193,7 @@ public class App
                         case 3: // all countries in a region
                             try {
                                 String region = getInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM country WHERE Region = '" + region + "' ORDER BY Name DESC");
+                                ResultSet result = queryHelper(con, "SELECT Name, Population FROM country WHERE Region = '" + region + "' ORDER BY Population DESC");
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
@@ -205,7 +205,7 @@ public class App
 
                         case 4: // all Cities in the world
                             try {
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city ORDER BY Name DESC");
+                                ResultSet result = queryHelper(con, "SELECT Name, Population FROM city ORDER BY Population DESC");
                                 while (result.next()){
                                     String city = result.getString("Name");
                                     System.out.println(city);
@@ -218,8 +218,8 @@ public class App
                         case 5: // all cities in a country
                             try {
                                 String country = getInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode" +
-                                        " = (SELECT Code FROM Country WHERE Name = '" + country + "') ORDER BY Name DESC");
+                                ResultSet result = queryHelper(con, "SELECT Name, Population FROM city WHERE CountryCode" +
+                                        " = (SELECT Code FROM Country WHERE Name = '" + country + "') ORDER BY Population DESC");
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
@@ -232,8 +232,8 @@ public class App
                         case 6: // all cities in a continent
                             try {
                                 String continent = getInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode" +
-                                        " = (SELECT Code FROM Country WHERE Continent = '" + continent + "') ORDER BY Name DESC");
+                                ResultSet result = queryHelper(con, "SELECT Name, Population FROM city WHERE CountryCode" +
+                                        " = (SELECT Code FROM Country WHERE Continent = '" + continent + "') ORDER BY Population DESC");
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
@@ -246,8 +246,8 @@ public class App
                         case 7: // all cities in a region
                             try {
                                 String region = getInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode" +
-                                        " = (SELECT Code FROM Country WHERE Region = '" + region + "') ORDER BY Name DESC");
+                                ResultSet result = queryHelper(con, "SELECT Name, Population FROM city WHERE CountryCode" +
+                                        " = (SELECT Code FROM Country WHERE Region = '" + region + "') ORDER BY Population DESC");
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
@@ -260,7 +260,7 @@ public class App
                         case 8: // all cities in a district
                             try {
                                 String district = getInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE District = '" +  district + "' ORDER BY Name DESC");
+                                ResultSet result = queryHelper(con, "SELECT Name, Population FROM city WHERE District = '" +  district + "' ORDER BY Population DESC");
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
