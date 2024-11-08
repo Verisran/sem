@@ -1,9 +1,9 @@
-name: A workflow for my Hello World App
+name: A workflow for Group33 SEM Database Access App
 on: push
 
 jobs:
   build:
-    name: Hello world action
+    name: DB Access App action
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -15,7 +15,9 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Build with Maven
+      #- name: Unit Tests
+      #  run: mvn -Dtest=JunitTest test
+      - name: Build package
         run: mvn package
       - name: Run docker compose
         run: docker compose up --abort-on-container-exit
