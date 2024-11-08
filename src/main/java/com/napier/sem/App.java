@@ -76,7 +76,7 @@ public class App
                                 ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country");
                                 if (result.next()) {
                                     long pop = result.getLong("SUM(Population)");
-                                    System.out.println("\n\npopulation of the world is: " + pop + " people\n\n");
+                                    System.out.println("population of the world is: " + pop + " people\n");
                                 }
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
@@ -96,6 +96,23 @@ public class App
                             + "\n 9 - All capital cities in the world. \t 6 - All capital cities in a continent"
                             + "\n 10 - ALl capital cities in a region"
                     );
+                    switch (getMenuInput())
+                    {
+                        case 1:
+                            try {
+                                ResultSet result = queryHelper(con, "SELECT Name, Pop2ulation FROM city ORDER BY Population DESC");
+                                while (result.next()) {
+                                    long pop = result.getLong("Population");
+                                    String name = result.getString("Name");
+                                    System.out.println("The population for "+ name + " is " + pop + "\n");
+                                }
+                            }
+                            catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            exit = true;
+                            break;
+                    }
                     break;
 
                 case 3: //top N queries
