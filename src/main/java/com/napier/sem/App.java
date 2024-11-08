@@ -71,7 +71,7 @@ public class App
                     );
 
                     switch (getMenuInput()) {
-                        case 1:
+                        case 1: //world population
                             try {
                                 ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country");
                                 if (result.next()) {
@@ -81,7 +81,60 @@ public class App
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
+                            break;
+                        case 2: // continent
+                            try {
+                                String continent = getInput();
+                                ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country WHERE Continent = '" + continent + "'");
+                                if (result.next()) {
+                                    long pop = result.getLong("SUM(Population)");
+                                    System.out.println("population of the world is: " + pop + " people\n");
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+                        case 3: //region population
+                            try {
+                                String region = getInput();
+                                ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country WHERE Region = '" + region + "'");
+                                if (result.next()) {
+                                    long pop = result.getLong("SUM(Population)");
+                                    System.out.println("population of the world is: " + pop + " people\n");
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
                             exit = true;
+                            break;
+                        case 4: //Country population
+                            try {
+                                String country = getInput();
+                                ResultSet result = queryHelper(con, "SELECT Population FROM country WHERE Name = '" + country + "'");
+                                if (result.next()) {
+                                    long pop = result.getLong("Population");
+                                    System.out.println("population of the world is: " + pop + " people\n");
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            exit = true;
+                            break;
+                        case 5:
+                            try {
+                                String city = getInput();
+                                ResultSet result = queryHelper(con, "SELECT Population FROM city WHERE Name = '" + city + "'");
+                                if (result.next()) {
+                                    long pop = result.getLong("Population");
+                                    System.out.println("The population for "+ city + " is " + pop + "\n");
+                                }
+                            }
+                            catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+                        default:
+                            System.out.println("\nInvalid selection, how rude...\n\n");
                             break;
                     }
                     break;
@@ -91,26 +144,77 @@ public class App
                             + "\n 1 - All countries in the world.\t 2 - All countries in a continent"
                             + "\n 3 - All countries in a region. \t 4 - All Cities in the world"
                             + "\n 5 - All cities in a country. \t 6 - All cities in a continent"
-                            + "\n 7 - All cities in a region. \t 8 - All cities in a country"
+                            + "\n 7 - All cities in a region. \t 8 - All cities in a district"
                             + "\n\n----\tcurrently unavailable for code review 2\t----"
-                            + "\n 9 - All capital cities in the world. \t 6 - All capital cities in a continent"
-                            + "\n 10 - ALl capital cities in a region"
+                            + "\n 9 - All capital cities in the world. \t 10 - All capital cities in a continent"
+                            + "\n 11 - ALl capital cities in a region"
                     );
+
                     switch (getMenuInput())
                     {
-                        case 1:
+                        case 1: // all countries in the world
                             try {
-                                ResultSet result = queryHelper(con, "SELECT Name, Pop2ulation FROM city ORDER BY Population DESC");
-                                while (result.next()) {
-                                    long pop = result.getLong("Population");
-                                    String name = result.getString("Name");
-                                    System.out.println("The population for "+ name + " is " + pop + "\n");
+                                ResultSet result = queryHelper(con, "SELECT Name FROM country ORDER BY Name DESC");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
                                 }
-                            }
-                            catch (Exception e) {
+                            } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
-                            exit = true;
+                            break;
+                        case 2: // all countries in a continent
+                            try {
+                                String continent = getInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM country WHERE Continent = '" + continent + "' ORDER BY Name DESC");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 3: // all countries in a region
+                            try {
+                                String region = getInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM country WHERE Region = '" + region + "' ORDER BY Name DESC");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 4: // all Cities in the world
+                            break;
+
+                        case 5: // all cities in a country
+                            break;
+
+                        case 6: // all cities in a continent
+                            break;
+
+                        case 7: // all cities in a region
+                            break;
+
+                        case 8: // all cities in a district
+                            break;
+
+                        case 9: // all capital cities in the world
+                            break;
+
+                        case 10: // all capital cities in a continent
+                            break;
+
+                        case 11: // all capital cities in a region
+                            break;
+
+                        default:
+                            System.out.println("\nInvalid selection, how rude...\n\n");
                             break;
                     }
                     break;
@@ -200,6 +304,11 @@ public class App
     {
         Scanner scan = new Scanner(System.in);
         return Integer.parseInt((scan.nextLine()));
+    }
+
+    private static String getInput(){
+        Scanner scan = new Scanner(System.in);
+        return scan.nextLine();
     }
 
     public ResultSet queryHelper(Connection con, String query_stmt) {
