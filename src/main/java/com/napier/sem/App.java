@@ -120,7 +120,7 @@ public class App
                             }
                             exit = true;
                             break;
-                        case 5:
+                        case 5: // city population
                             try {
                                 String city = getInput();
                                 ResultSet result = queryHelper(con, "SELECT Population FROM city WHERE Name = '" + city + "'");
@@ -133,7 +133,7 @@ public class App
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
                             break;
-                        case 6:
+                        case 6: // district population
                             try {
                                 String district = getInput();
                                 ResultSet result = queryHelper(con, "SELECT Population FROM city WHERE District = '" + district + "'");
@@ -218,6 +218,7 @@ public class App
                         case 8: // all cities in a district
                             break;
 
+                        // ignore past here for code rev 2...
                         case 9: // all capital cities in the world
                             break;
 
