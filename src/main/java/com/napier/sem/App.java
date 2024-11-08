@@ -219,9 +219,9 @@ public class App
                             try {
                                 String country = getInput();
                                 ResultSet result = queryHelper(con, "SELECT Name, Population FROM city WHERE CountryCode" +
-                                        " = (SELECT Code FROM Country WHERE Name = '" + country + "') ORDER BY Population DESC");
+                                        " = (SELECT Code FROM country WHERE Name = '" + country + "') ORDER BY Population DESC");
                                 while (result.next()){
-                                    String country = result.getString("Name");
+                                    country = result.getString("Name");
                                     System.out.println(country);
                                 }
                             } catch (Exception e) {
@@ -233,7 +233,7 @@ public class App
                             try {
                                 String continent = getInput();
                                 ResultSet result = queryHelper(con, "SELECT Name, Population FROM city WHERE CountryCode" +
-                                        " = (SELECT Code FROM Country WHERE Continent = '" + continent + "') ORDER BY Population DESC");
+                                        " = (SELECT Code FROM country WHERE Continent = '" + continent + "') ORDER BY Population DESC");
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
@@ -247,7 +247,7 @@ public class App
                             try {
                                 String region = getInput();
                                 ResultSet result = queryHelper(con, "SELECT Name, Population FROM city WHERE CountryCode" +
-                                        " = (SELECT Code FROM Country WHERE Region = '" + region + "') ORDER BY Population DESC");
+                                        " = (SELECT Code FROM country WHERE Region = '" + region + "') ORDER BY Population DESC");
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
