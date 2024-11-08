@@ -67,7 +67,7 @@ public class App
                     System.out.println("\n>>> 1\t basic population queries selected..."
                             + "\n 1 - Population of the world.\t 2 - Population of a Continent"
                             + "\n 3 - Population of a region. \t 4 - Population of a country"
-                            + "\n 5 - population of a city"
+                            + "\n 5 - population of a city. \t 6 - Population of a district"
                     );
 
                     switch (getMenuInput()) {
@@ -133,6 +133,20 @@ public class App
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
                             break;
+                        case 6:
+                            try {
+                                String district = getInput();
+                                ResultSet result = queryHelper(con, "SELECT Population FROM city WHERE District = '" + district + "'");
+                                if (result.next()) {
+                                    long pop = result.getLong("Population");
+                                    System.out.println("The population for "+ district + " is " + pop + "\n");
+                                }
+                            }
+                            catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
                         default:
                             System.out.println("\nInvalid selection, how rude...\n\n");
                             break;
