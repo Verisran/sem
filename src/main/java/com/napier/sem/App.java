@@ -204,18 +204,70 @@ public class App
                             break;
 
                         case 4: // all Cities in the world
+                            try {
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city ORDER BY Name DESC");
+                                while (result.next()){
+                                    String city = result.getString("Name");
+                                    System.out.println(city);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
                             break;
 
                         case 5: // all cities in a country
+                            try {
+                                String country = getInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode" +
+                                        " = (SELECT Code FROM Country WHERE Name = '" + country + "') ORDER BY Name DESC");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
                             break;
 
                         case 6: // all cities in a continent
+                            try {
+                                String continent = getInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode" +
+                                        " = (SELECT Code FROM Country WHERE Continent = '" + continent + "') ORDER BY Name DESC");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
                             break;
 
                         case 7: // all cities in a region
+                            try {
+                                String region = getInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode" +
+                                        " = (SELECT Code FROM Country WHERE Region = '" + region + "') ORDER BY Name DESC");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
                             break;
 
                         case 8: // all cities in a district
+                            try {
+                                String district = getInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE District = '" +  district + "' ORDER BY Name DESC");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
                             break;
 
                         // ignore past here for code rev 2...
