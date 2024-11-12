@@ -348,9 +348,13 @@ public class App
                     // Wait a bit for db to start
                     Thread.sleep(delay);
                 }
+                System.out.println("Please enter the username for the database: "); //default: root
+                String user = getInput();
+                System.out.println("Please enter the password for the database: "); //default: world
+                String password = getInput();
                 //jdbc:mysql://docker-mysql/database?autoReconnect=true&useSSL=false
                 // Connect to database
-                Connection con = DriverManager.getConnection("jdbc:mysql://" + location + "/world?allowPublicKeyRetrieval=true&useSSL=false", "root", "world");
+                Connection con = DriverManager.getConnection("jdbc:mysql://" + location + "/world?allowPublicKeyRetrieval=true&useSSL=false", user, password);
                 System.out.println("Successfully connected");
                 return con;
             }
@@ -366,6 +370,7 @@ public class App
         }
         return null;
     }
+
 
     private static int getMenuInput()
     {
