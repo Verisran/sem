@@ -3,7 +3,10 @@
 package com.napier.sem;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class App
@@ -74,10 +77,9 @@ public class App
                         case 1: //world population
                             try {
                                 ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country");
-                                if (result.next()) {
-                                    long pop = result.getLong("SUM(Population)");
-                                    System.out.println("population of the world is: " + pop + " people\n");
-                                }
+                                String pop = resultToStringParser(result).get(0);
+                                System.out.println("population of the world is: " + pop + " people\n");
+
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
@@ -86,10 +88,10 @@ public class App
                             try {
                                 String continent = getInput();
                                 ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country WHERE Continent = '" + continent + "'");
-                                if (result.next()) {
-                                    long pop = result.getLong("SUM(Population)");
-                                    System.out.println("population of the world is: " + pop + " people\n");
-                                }
+                                String pop = resultToStringParser(result).get(0);
+
+                                System.out.println("population of the world is: " + pop + " people\n");
+
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
@@ -98,10 +100,9 @@ public class App
                             try {
                                 String region = getInput();
                                 ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country WHERE Region = '" + region + "'");
-                                if (result.next()) {
-                                    long pop = result.getLong("SUM(Population)");
-                                    System.out.println("population of the world is: " + pop + " people\n");
-                                }
+                                String pop = resultToStringParser(result).get(0);
+                                System.out.println("population of " + region + " is: " + pop + " people\n");
+
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
@@ -111,10 +112,9 @@ public class App
                             try {
                                 String country = getInput();
                                 ResultSet result = queryHelper(con, "SELECT Population FROM country WHERE Name = '" + country + "'");
-                                if (result.next()) {
-                                    long pop = result.getLong("Population");
-                                    System.out.println("population of the world is: " + pop + " people\n");
-                                }
+                                String pop = resultToStringParser(result).get(0);
+                                System.out.println("population of "+ country + " is: " + pop + " people\n");
+
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
@@ -124,10 +124,9 @@ public class App
                             try {
                                 String city = getInput();
                                 ResultSet result = queryHelper(con, "SELECT Population FROM city WHERE Name = '" + city + "'");
-                                if (result.next()) {
-                                    long pop = result.getLong("Population");
-                                    System.out.println("The population for "+ city + " is " + pop + "\n");
-                                }
+                                String pop = resultToStringParser(result).get(0);
+                                System.out.println("The population for "+ city + " is " + pop + "\n");
+
                             }
                             catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
@@ -395,6 +394,49 @@ public class App
             return stmnt.executeQuery(query_stmt);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+
+    //Returns ALL columns of the inputted resultSet in order and accessible by using .get(index) on the result
+    public List<String> resultToStringParser(ResultSet resultSet){
+        try {
+            //Intellij Cries if we dont use StringBuilder
+            List<String> queryResult = new ArrayList<String>();
+            //get metadata and colum count
+            ResultSetMetaData rsMetaData = resultSet.getMetaData();
+            int columns = rsMetaData.getColumnCount();
+
+            while(resultSet.next()) {
+                //Loops through all columns
+                for (int i = 1; i <= columns; i++) {
+                    //Dynamically Selects each type
+                    String columnName = rsMetaData.getColumnName(i);
+                    int columnType = rsMetaData.getColumnType(i);
+                    //int corresponds to Type
+                    switch (columnType) {
+                        case Types.CHAR:
+                            queryResult.add(resultSet.getString(i));
+                        case Types.VARCHAR:
+                            queryResult.add(resultSet.getString(i));
+                        case Types.INTEGER:
+                            queryResult.add(Integer.toString( resultSet.getInt(i) ));
+                        case Types.DECIMAL:
+                            queryResult.add(Long.toString( resultSet.getLong(i) ));
+                        //case Types.NUMERIC:
+                        //    queryResult.append(resultSet.getDouble(i));
+                        //    queryResult.append("\n");
+                        //case Types.FLOAT:
+                        //    queryResult.append(resultSet.getFloat(i));
+                        //    queryResult.append("\n");
+                    }
+                }
+            }
+            return queryResult;
+        }
+        catch (SQLException e) {
+            System.out.println("SOME ERROR HAPPENED. HOW OR WHAT? IDGFA!");
+            return null;
         }
     }
 }
