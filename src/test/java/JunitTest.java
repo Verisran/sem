@@ -13,7 +13,7 @@ class JunitTest
     App app = new App();
 
     @Test   //Connection Test
-    void unitTest()
+    void resultCatchNullTest()
     {
         ResultSet rs = null;
         assertTrue("Result Was Null".equals( app.resultToStringParser(rs).get(0) ));
