@@ -2,8 +2,6 @@
 
 package com.napier.sem;
 
-import java.io.*;
-import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +9,6 @@ import java.util.Scanner;
 
 public class App
 {
-    Scanner sc = new Scanner(System.in);
-
     //==================================MAIN==================================\\
     public static void main(String[] args)
     {
@@ -190,7 +186,7 @@ public class App
                     break;
 
                 //-----------------------------NEED TO BE ADAPTED TO NEWEST METHODS-----------------------------
-                //-----------------------------ISSUE WITH RESULTSET TO STRING-----------------------------------
+                //-----------------------------ISSUE WITH RESULT SET TO STRING-----------------------------------
                 case 2: // all x in y
                     System.out.println("\n\t>>>2\t all x in y queries selected..."
                             + "\n 1 - All countries in the world.\t 2 - All countries in a continent"
@@ -207,9 +203,9 @@ public class App
                         case 1: // all countries in the world
                             try {
                                 ResultSet result = queryHelper(con, "SELECT Name, Population FROM country ORDER BY Population DESC");
-                                while (result.next()){
-                                    String country = result.getString("Name");
-                                    System.out.println(country);
+                                List<String> resultList = resultToStringParser(result);
+                                for (String s : resultList) {
+                                    System.out.println(s);
                                 }
 
                             } catch (Exception e) {
@@ -424,7 +420,7 @@ public class App
     }
 
     public ResultSet queryHelper(Connection con, String query_stmt) {
-        Statement stmnt = null;
+        Statement stmnt;
         try {
             stmnt = con.createStatement();
         } catch (SQLException e) {
@@ -444,7 +440,7 @@ public class App
 
         try {
             //Allows for multiple columns
-            List<String> queryResult = new ArrayList<String>();
+            List<String> queryResult = new ArrayList<>();
             //CatchNull
             if(resultSet == null){
                 queryResult.add("Result Was Null");
@@ -453,7 +449,6 @@ public class App
             //get metadata and colum count
             ResultSetMetaData rsMetaData = resultSet.getMetaData();
             int columns = rsMetaData.getColumnCount();
-
             while(resultSet.next()) {
                 //Loops through all columns
                 for (int i = 1; i <= columns; i++) {
@@ -462,17 +457,21 @@ public class App
                     //int corresponds to Type
                     switch (columnType) {
                         case Types.CHAR:
-                            queryResult.add(resultSet.getString(i));
                         case Types.VARCHAR:
                             queryResult.add(resultSet.getString(i));
+                            break;
                         case Types.INTEGER:
                             queryResult.add(Integer.toString( resultSet.getInt(i) ));
+                            break;
                         case Types.DECIMAL:
                             queryResult.add(Long.toString( resultSet.getLong(i) ));
+                            break;
                         case Types.NUMERIC:
                             queryResult.add(Double.toString(resultSet.getDouble(i)) );
+                            break;
                         case Types.FLOAT:
                             queryResult.add(Float.toString(resultSet.getFloat(i)) );
+                            break;
                     }
                 }
             }
