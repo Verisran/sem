@@ -400,9 +400,15 @@ public class App
 
     //Returns ALL columns of the inputted resultSet in order and accessible by using .get(index) on the result
     public List<String> resultToStringParser(ResultSet resultSet){
+
         try {
-            //Intellij Cries if we dont use StringBuilder
+            //Allows for multiple columns
             List<String> queryResult = new ArrayList<String>();
+            //CatchNull
+            if(resultSet == null){
+                queryResult.add("Result Was Null");
+                return queryResult;}
+
             //get metadata and colum count
             ResultSetMetaData rsMetaData = resultSet.getMetaData();
             int columns = rsMetaData.getColumnCount();
@@ -426,7 +432,6 @@ public class App
                             queryResult.add(Double.toString(resultSet.getDouble(i)) );
                         case Types.FLOAT:
                             queryResult.add(Float.toString(resultSet.getFloat(i)) );
-
                     }
                 }
             }

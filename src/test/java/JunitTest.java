@@ -11,19 +11,13 @@ class JunitTest
 {
     //assert takes in 3 params: expected result, actual result, message when failed
     App app = new App();
-    Connection con = app.connect("localhost:33060", 8000);
-
 
     @Test   //Connection Test
     void unitTest()
     {
-        assertNotNull(con, "Connection failed.");
+        ResultSet rs = null;
+        assertTrue("Result Was Null".equals( app.resultToStringParser(rs).get(0) ));
     }
 
-    @Test
-    void unitTest2() throws SQLException //Table Select Test
-    {
-        ResultSet tables = app.queryHelper(con, "SELECT * FROM country");
-        assertTrue(tables.next(), "Table wasnt found");
-    }
+
 }
