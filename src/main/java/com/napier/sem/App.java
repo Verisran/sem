@@ -411,7 +411,6 @@ public class App
                 //Loops through all columns
                 for (int i = 1; i <= columns; i++) {
                     //Dynamically Selects each type
-                    String columnName = rsMetaData.getColumnName(i);
                     int columnType = rsMetaData.getColumnType(i);
                     //int corresponds to Type
                     switch (columnType) {
@@ -423,19 +422,18 @@ public class App
                             queryResult.add(Integer.toString( resultSet.getInt(i) ));
                         case Types.DECIMAL:
                             queryResult.add(Long.toString( resultSet.getLong(i) ));
-                        //case Types.NUMERIC:
-                        //    queryResult.append(resultSet.getDouble(i));
-                        //    queryResult.append("\n");
-                        //case Types.FLOAT:
-                        //    queryResult.append(resultSet.getFloat(i));
-                        //    queryResult.append("\n");
+                        case Types.NUMERIC:
+                            queryResult.add(Double.toString(resultSet.getDouble(i)) );
+                        case Types.FLOAT:
+                            queryResult.add(Float.toString(resultSet.getFloat(i)) );
+
                     }
                 }
             }
             return queryResult;
         }
         catch (SQLException e) {
-            System.out.println("SOME ERROR HAPPENED. HOW OR WHAT? IDGFA!");
+            System.out.println("SOME ERROR HAPPENED.");
             return null;
         }
     }
