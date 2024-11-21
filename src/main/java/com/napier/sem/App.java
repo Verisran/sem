@@ -36,7 +36,7 @@ public class App
         System.out.println("notice: selection is wip and certain queries don't work.\n\n\n---\tWELCOME TO THE DATABASE INTERFACE!\t---");
 
         if(con == null){return;}
-        app.menu(con);
+        app.menuQueries(con);
 
 
         try {
@@ -50,20 +50,51 @@ public class App
 
     //====================================FUNCTIONS====================================\\
 
-    public void menu(Connection con) {
+    public int menuSelection(){
+        return menuSelection(-1);
+    }
+
+    public int menuSelection(int selection)
+    {
+        //selection message, will be shown each time there is a selection to be made
+        System.out.println(
+                "\n\t---\tplease make the following selections\t---"
+                        + "\n1 - Basic Population Queries\t 2 - All the x in y Queries"
+                        + "\n3 - top N queries\t 4 - Complex population queries"
+                        + "\n5 - reports\t 0 - quit\n\n"
+        );
+        System.out.print("> ");
+        if(selection == -1) {
+            selection = getMenuInput();
+        }
+        return selection;
+    }
+
+    //leave each query selection thingy empty "" as such if not needed in the query
+    public String menuQueryBuilder(String select, String from, String where, String order){
+        String final_query = "";
+
+        if(!select.isEmpty()) {
+            final_query += "SELECT " + select;
+        }
+        if(!from.isEmpty()){
+            final_query += " FROM " + from;
+        }
+        if(!where.isEmpty()) {
+            final_query += " WHERE " + where;
+        }
+        if(!order.isEmpty()) {
+            final_query += " ORDER BY " + order;
+        }
+        return final_query;
+    }
+
+
+    public void menuQueries(Connection con) {
         boolean exit = false;
         while (!exit)
         {
-            int selection;
-            //selection message, will be shown each time there is a selection to be made
-            System.out.println(
-                    "\n\t---\tplease make the following selections\t---"
-                            + "\n1 - Basic Population Queries\t 2 - All the x in y Queries"
-                            + "\n3 - top N queries\t 4 - Complex population queries"
-                            + "\n5 - reports\t 0 - quit\n\n"
-            );
-            System.out.print("> ");
-            selection = getMenuInput();
+            int selection = menuSelection();
             switch (selection) {
                 case 1: // basic population queries
 
@@ -76,7 +107,7 @@ public class App
                     switch (getMenuInput()) {
                         case 1: //world population
                             try {
-                                ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country");
+                                ResultSet result = queryHelper(con, menuQueryBuilder("SUM(Population)", "country", "",""));
                                 String pop = resultToStringParser(result).get(0);
                                 System.out.println("population of the world is: " + pop + " people\n");
 
@@ -86,11 +117,12 @@ public class App
                             break;
                         case 2: // continent
                             try {
-                                String continent = getInput();
-                                ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country WHERE Continent = '" + continent + "'");
+                                System.out.println("Please enter a Continent: ");
+                                String continent = getStringInput();
+                                ResultSet result = queryHelper(con, menuQueryBuilder("SUM(Population)","country" ,"Continent = '" + continent + "'", "") );
                                 String pop = resultToStringParser(result).get(0);
 
-                                System.out.println("population of the world is: " + pop + " people\n");
+                                System.out.println("population of "+ continent + " is: " + pop + " people\n");
 
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
@@ -98,8 +130,9 @@ public class App
                             break;
                         case 3: //region population
                             try {
-                                String region = getInput();
-                                ResultSet result = queryHelper(con, "SELECT SUM(Population) FROM country WHERE Region = '" + region + "'");
+                                System.out.println("Please enter a Region: ");
+                                String region = getStringInput();
+                                ResultSet result = queryHelper(con, menuQueryBuilder("SUM(Population)", "country", "Region = '" + region + "'", ""));
                                 String pop = resultToStringParser(result).get(0);
                                 System.out.println("population of " + region + " is: " + pop + " people\n");
 
@@ -110,8 +143,10 @@ public class App
                             break;
                         case 4: //Country population
                             try {
-                                String country = getInput();
-                                ResultSet result = queryHelper(con, "SELECT Population FROM country WHERE Name = '" + country + "'");
+                                System.out.println("Please enter a Country: ");
+                                String country = getStringInput();
+
+                                ResultSet result = queryHelper(con, menuQueryBuilder("Population", "country", "Name = '" + country + "'", ""));
                                 String pop = resultToStringParser(result).get(0);
                                 System.out.println("population of "+ country + " is: " + pop + " people\n");
 
@@ -122,8 +157,10 @@ public class App
                             break;
                         case 5: // city population
                             try {
-                                String city = getInput();
-                                ResultSet result = queryHelper(con, "SELECT Population FROM city WHERE Name = '" + city + "'");
+                                System.out.println("Please enter a City: ");
+                                String city = getStringInput();
+
+                                ResultSet result = queryHelper(con, menuQueryBuilder("Population", "city", "Name = '" + city + "'", ""));
                                 String pop = resultToStringParser(result).get(0);
                                 System.out.println("The population for "+ city + " is " + pop + "\n");
 
@@ -134,10 +171,10 @@ public class App
                             break;
                         case 6: // district population
                             try {
-                                String district = getInput();
-                                ResultSet result = queryHelper(con, "SELECT Population FROM city WHERE District = '" + district + "'");
+                                String district = getStringInput();
+                                ResultSet result = queryHelper(con, menuQueryBuilder("Population","city", "District = '" + district + "'", ""));
                                 if (result.next()) {
-                                    long pop = result.getLong("Population");
+                                    String pop = resultToStringParser(result).get(0);
                                     System.out.println("The population for "+ district + " is " + pop + "\n");
                                 }
                             }
@@ -152,13 +189,15 @@ public class App
                     }
                     break;
 
+                //-----------------------------NEED TO BE ADAPTED TO NEWEST METHODS-----------------------------
+                //-----------------------------ISSUE WITH RESULTSET TO STRING-----------------------------------
                 case 2: // all x in y
                     System.out.println("\n\t>>>2\t all x in y queries selected..."
                             + "\n 1 - All countries in the world.\t 2 - All countries in a continent"
                             + "\n 3 - All countries in a region. \t 4 - All Cities in the world"
                             + "\n 5 - All cities in a country. \t 6 - All cities in a continent"
                             + "\n 7 - All cities in a region. \t 8 - All cities in a district"
-                            + "\n\n----\tcurrently unavailable for code review 2\t----"
+                            + "\n\n----\tcurrently unavailable for code review 3\t----"
                             + "\n 9 - All capital cities in the world. \t 10 - All capital cities in a continent"
                             + "\n 11 - ALl capital cities in a region"
                     );
@@ -172,17 +211,18 @@ public class App
                                     String country = result.getString("Name");
                                     System.out.println(country);
                                 }
+
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
                             break;
                         case 2: // all countries in a continent
                             try {
-                                String continent = getInput();
-                                ResultSet result = queryHelper(con, "SELECT Name, Population FROM country WHERE Continent = '" + continent + "' ORDER BY Population DESC");
-                                while (result.next()){
-                                    String country = result.getString("Name");
-                                    System.out.println(country);
+                                String continent = getStringInput();
+                                ResultSet result = queryHelper(con, menuQueryBuilder("Name, Population", "country", "Continent = ' "+ continent + "'", "Population DESC"));
+                                List<String> resultList = resultToStringParser(result);
+                                for (String s : resultList) {
+                                    System.out.println(s);
                                 }
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
@@ -191,11 +231,11 @@ public class App
 
                         case 3: // all countries in a region
                             try {
-                                String region = getInput();
-                                ResultSet result = queryHelper(con, "SELECT Name, Population FROM country WHERE Region = '" + region + "' ORDER BY Population DESC");
-                                while (result.next()){
-                                    String country = result.getString("Name");
-                                    System.out.println(country);
+                                String region = getStringInput();
+                                ResultSet result = queryHelper(con, menuQueryBuilder("Name, Population", "country", "Region = ' "+ region + "'", "Population DESC"));
+                                List<String> resultList = resultToStringParser(result);
+                                for (String s : resultList) {
+                                    System.out.println(s);
                                 }
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
@@ -216,7 +256,7 @@ public class App
 
                         case 5: // all cities in a country
                             try {
-                                String country = getInput();
+                                String country = getStringInput();
                                 ResultSet result = queryHelper(con, "SELECT Name, Population FROM city WHERE CountryCode" +
                                         " = (SELECT Code FROM country WHERE Name = '" + country + "') ORDER BY Population DESC");
                                 while (result.next()){
@@ -230,7 +270,7 @@ public class App
 
                         case 6: // all cities in a continent
                             try {
-                                String continent = getInput();
+                                String continent = getStringInput();
                                 ResultSet result = queryHelper(con, "SELECT Name, Population FROM city WHERE CountryCode" +
                                         " = (SELECT Code FROM country WHERE Continent = '" + continent + "') ORDER BY Population DESC");
                                 while (result.next()){
@@ -242,9 +282,10 @@ public class App
                             }
                             break;
 
+
                         case 7: // all cities in a region
                             try {
-                                String region = getInput();
+                                String region = getStringInput();
                                 ResultSet result = queryHelper(con, "SELECT Name, Population FROM city WHERE CountryCode" +
                                         " = (SELECT Code FROM country WHERE Region = '" + region + "') ORDER BY Population DESC");
                                 while (result.next()){
@@ -258,7 +299,7 @@ public class App
 
                         case 8: // all cities in a district
                             try {
-                                String district = getInput();
+                                String district = getStringInput();
                                 ResultSet result = queryHelper(con, "SELECT Name, Population FROM city WHERE District = '" +  district + "' ORDER BY Population DESC");
                                 while (result.next()){
                                     String country = result.getString("Name");
@@ -348,9 +389,9 @@ public class App
                     Thread.sleep(delay);
                 }
                 System.out.println("Please enter the username for the database: "); //default: root
-                String user = getInput();
+                String user = getStringInput();
                 System.out.println("Please enter the password for the database: "); //default: world
-                String password = getInput();
+                String password = getStringInput();
                 //jdbc:mysql://docker-mysql/database?autoReconnect=true&useSSL=false
                 // Connect to database
                 Connection con = DriverManager.getConnection("jdbc:mysql://" + location + "/world?allowPublicKeyRetrieval=true&useSSL=false", user, password);
@@ -377,7 +418,7 @@ public class App
         return Integer.parseInt((scan.nextLine()));
     }
 
-    private static String getInput(){
+    private static String getStringInput(){
         Scanner scan = new Scanner(System.in);
         return scan.nextLine();
     }
