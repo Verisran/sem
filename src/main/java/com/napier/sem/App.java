@@ -381,9 +381,9 @@ public class App
                             try {
                                 Integer N = Integer.parseInt(getStringInput());
                                 String continent = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE ID " + " = (SELECT Capital FROM country WHERE Continent = '"+ continent +"') ORDER BY Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.ID = country.Capital WHERE country.continent = '"+continent"' ORDER BY city.Population DESC LIMIT " + N +"");
                                 while (result.next()) {
-                                    String city = result.getString("Name");
+                                    String city = result.getString("city.Name");
                                     System.out.println(city);
                                 }
                             }catch (Exception e) {
@@ -395,9 +395,9 @@ public class App
                             try {
                                 Integer N = Integer.parseInt(getStringInput());
                                 String region = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE ID " + " = (SELECT Capital FROM country WHERE Region = '"+ region +"') ORDER BY Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city  JOIN country ON city.ID = country.Capital WHERE country.region = '"+region+"' ORDER BY city.Population DESC LIMIT " + N +"");
                                 while (result.next()) {
-                                    String city = result.getString("Name");
+                                    String city = result.getString("city.Name");
                                     System.out.println(city);
                                 }
                             }catch (Exception e) {
@@ -422,9 +422,9 @@ public class App
                             try {
                                 Integer N = Integer.parseInt(getStringInput());
                                 String continent = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode " + " = (SELECT Code FROM country WHERE Continent = '"+ continent +"') ORDER BY Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Continent = '"+continent"' ORDER BY city.Population DESC LIMIT " + N +"");
                                 while (result.next()) {
-                                    String city = result.getString("Name");
+                                    String city = result.getString("city.Name");
                                     System.out.println(city);
                                 }
                             }catch (Exception e) {
@@ -436,9 +436,9 @@ public class App
                             try {
                                 Integer N = Integer.parseInt(getStringInput());
                                 String region = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode " + " = (SELECT Code FROM country WHERE Region = '"+region+"') ORDER BY Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Region = '"+region+"' ORDER BY city.Population DESC LIMIT " + N +"");
                                 while (result.next()) {
-                                    String city = result.getString("Name");
+                                    String city = result.getString("city.Name");
                                     System.out.println(city);
                                 }
                             }catch (Exception e) {
@@ -450,9 +450,9 @@ public class App
                             try {
                                 Integer N = Integer.parseInt(getStringInput());
                                 String country = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode " + " = (SELECT Code FROM country WHERE Name = '"+country+"') ORDER BY Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Name = '"+country"' ORDER BY city.Population DESC LIMIT " + N +"");
                                 while (result.next()) {
-                                    String city = result.getString("Name");
+                                    String city = result.getString("city.Name");
                                     System.out.println(city);
                                 }
                             }catch (Exception e) {
