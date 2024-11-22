@@ -15,9 +15,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      #- name: Unit Tests
-      #  run: mvn -Dtest=JunitTest test
-      - name: Build package
+      - name: Unit Tests
+        run: mvn -Dtest=com.napier.sem.JunitTest test -X
+      - name: package
         run: mvn package
-      - name: Run docker compose
-        run: docker compose up --abort-on-container-exit
