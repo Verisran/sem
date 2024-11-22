@@ -308,12 +308,42 @@ public class App
 
                         // ignore past here for code rev 2...
                         case 9: // all capital cities in the world
+                            try {
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE ID = " +  " = (SELECT Capital FROM country)");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            }catch (Exception e){
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
                             break;
 
                         case 10: // all capital cities in a continent
+                            try {
+                                String continent = getStringInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE ID = " + " = (SELECT Capital FROM country WHERE Continent = '" + continent + "");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            }catch (Exception e){
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
                             break;
 
                         case 11: // all capital cities in a region
+                            try {
+                                String region = getStringInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE ID = " + " = (SELECT Capital FROM country WHERE Region = '" + region + "'");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            }catch (Exception e){
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+
                             break;
 
                         default:
@@ -332,7 +362,159 @@ public class App
                             + "\n 9 - Top 'N' populated countries in the world \t 9 - Top 'N' populated countries in a Continent"
                             + "\n 10 - top 'N' populated countries in a region."
                     );
+                    switch (getMenuInput())
+                    {
+                        case 1: //Top 'N' populated capital cities in the world
+                            try {
+                                Integer N = Integer.parseInt(getStringInput());
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE ID " + " = (SELECT Capital FROM country) ORDER BY Population DESC LIMIT " + N +"");
+                                while (result.next()) {
+                                    String city = result.getString("Name");
+                                    System.out.println(city);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
 
+                        case 2: //Top 'N' populated capital cities of a continent
+                            try {
+                                Integer N = Integer.parseInt(getStringInput());
+                                String continent = getStringInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE ID " + " = (SELECT Capital FROM country WHERE Continent = '"+ continent +"') ORDER BY Population DESC LIMIT " + N +"");
+                                while (result.next()) {
+                                    String city = result.getString("Name");
+                                    System.out.println(city);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 3: //Top 'N' populated capital cities in a region
+                            try {
+                                Integer N = Integer.parseInt(getStringInput());
+                                String region = getStringInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE ID " + " = (SELECT Capital FROM country WHERE Region = '"+ region +"') ORDER BY Population DESC LIMIT " + N +"");
+                                while (result.next()) {
+                                    String city = result.getString("Name");
+                                    System.out.println(city);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 4: //Top 'N' populated cities in the world
+                            try {
+                                Integer N = Integer.parseInt(getStringInput());
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city ORDER BY Population DESC LIMIT " + N +"");
+                                while (result.next()) {
+                                    String city = result.getString("Name");
+                                    System.out.println(city);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 5://Top 'N' populated cities in a continent
+                            try {
+                                Integer N = Integer.parseInt(getStringInput());
+                                String continent = getStringInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode " + " = (SELECT Code FROM country WHERE Continent = '"+ continent +"') ORDER BY Population DESC LIMIT " + N +"");
+                                while (result.next()) {
+                                    String city = result.getString("Name");
+                                    System.out.println(city);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 6://Top 'N' populated cities in a region
+                            try {
+                                Integer N = Integer.parseInt(getStringInput());
+                                String region = getStringInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode " + " = (SELECT Code FROM country WHERE Region = '"+region+"') ORDER BY Population DESC LIMIT " + N +"");
+                                while (result.next()) {
+                                    String city = result.getString("Name");
+                                    System.out.println(city);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 7://Top 'N' populated cities in a country
+                            try {
+                                Integer N = Integer.parseInt(getStringInput());
+                                String country = getStringInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE CountryCode " + " = (SELECT Code FROM country WHERE Name = '"+country+"') ORDER BY Population DESC LIMIT " + N +"");
+                                while (result.next()) {
+                                    String city = result.getString("Name");
+                                    System.out.println(city);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 8://Top 'N' populated cities in a district
+                            try {
+                                Integer N = Integer.parseInt(getStringInput());
+                                String district = getStringInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE District = '"+district+"' ORDER BY Population DESC LIMIT " + N +"");
+                                while (result.next()) {
+                                    String city = result.getString("Name");
+                                    System.out.println(city);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 9://Top 'N' populated countries in the world
+                            try {
+                                Integer N = Integer.parseInt(getStringInput());
+                                ResultSet result = queryHelper(con, "SELECT Name FROM country ORDER BY Population DESC LIMIT " + N +"");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 10://Top 'N' populated countries in a continent
+                            try {
+                                Integer N = Integer.parseInt(getStringInput());
+                                String continent = getStringInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM country WHERE Continent = '"+continent+"' ORDER BY Population DESC LIMIT " + N +"");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 11://Top 'N' populated countries in a region
+                            try {
+                                Integer N = Integer.parseInt(getStringInput());
+                                String region = getStringInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM country WHERE Region = '" + region +"' ORDER BY Population DESC LIMIT " + N +"");
+                                while (result.next()){
+                                    String country = result.getString("Name");
+                                    System.out.println(country);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+                    }
                     break;
 
                 case 4: //complex population queries
