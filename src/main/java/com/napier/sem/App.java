@@ -367,9 +367,9 @@ public class App
                         case 1: //Top 'N' populated capital cities in the world
                             try {
                                 Integer N = Integer.parseInt(getStringInput());
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE ID " + " = (SELECT Capital FROM country) ORDER BY Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.ID = country.Capital ORDER BY city.Population DESC LIMIT " + N +"");
                                 while (result.next()) {
-                                    String city = result.getString("Name");
+                                    String city = result.getString("city.Name");
                                     System.out.println(city);
                                 }
                             } catch (Exception e) {
