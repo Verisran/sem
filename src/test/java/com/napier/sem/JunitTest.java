@@ -1,4 +1,5 @@
-import com.napier.sem.App;
+package com.napier.sem;
+
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.sql.ResultSet;
@@ -18,7 +19,8 @@ class JunitTest
 
         @Test
         void testMenuSelect () {
-            assertEquals(0, app.menuSelection(651), "menu selection failed");
+            assertEquals(651, app.menuSelection(651), "menu selection failed");
+            assertEquals(1,app.menuSelection(1), "menu selection failed");
         }
 
         @Test

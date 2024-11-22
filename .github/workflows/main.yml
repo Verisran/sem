@@ -18,4 +18,4 @@ jobs:
       - name: package
         run: mvn package
       - name: Unit Tests
-        run: mvn -Dtest=com.napier.sem.JunitTest test
+        run: mvn -Dtest=test/java/com.napier.sem.JunitTest test
