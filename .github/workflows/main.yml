@@ -16,6 +16,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: package
-        run: mvn Package
+        run: mvn package
       - name: Unit Tests
         run: mvn -Dtest=com.napier.sem.JunitTest test
