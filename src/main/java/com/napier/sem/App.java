@@ -187,6 +187,7 @@ public class App
 
                 //-----------------------------NEED TO BE ADAPTED TO NEWEST METHODS-----------------------------
                 //-----------------------------ISSUE WITH RESULT SET TO STRING-----------------------------------
+                // not appropriate
                 case 2: // all x in y
                     System.out.println("\n\t>>>2\t all x in y queries selected..."
                             + "\n 1 - All countries in the world.\t 2 - All countries in a continent"
