@@ -381,7 +381,7 @@ public class App
                             try {
                                 Integer N = Integer.parseInt(getStringInput());
                                 String continent = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.ID = country.Capital WHERE country.continent = '"+continent"' ORDER BY city.Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.ID = country.Capital WHERE country.continent = '" + continent + "' ORDER BY city.Population DESC LIMIT " + N +"");
                                 while (result.next()) {
                                     String city = result.getString("city.Name");
                                     System.out.println(city);
@@ -422,7 +422,7 @@ public class App
                             try {
                                 Integer N = Integer.parseInt(getStringInput());
                                 String continent = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Continent = '"+continent"' ORDER BY city.Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Continent = '" + continent + "' ORDER BY city.Population DESC LIMIT " + N +"");
                                 while (result.next()) {
                                     String city = result.getString("city.Name");
                                     System.out.println(city);
@@ -450,7 +450,7 @@ public class App
                             try {
                                 Integer N = Integer.parseInt(getStringInput());
                                 String country = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Name = '"+country"' ORDER BY city.Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Name = '"+country+"' ORDER BY city.Population DESC LIMIT " + N +"");
                                 while (result.next()) {
                                     String city = result.getString("city.Name");
                                     System.out.println(city);
