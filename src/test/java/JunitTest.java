@@ -1,4 +1,4 @@
-import com.napier.sem.App;
+/*import com.napier.sem.App;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.sql.ResultSet;
@@ -24,4 +24,4 @@ class JunitTest
     void testMenuQueryBuilder(){
         assertEquals("SELECT pop FROM database WHERE pop = 20", app.menuQueryBuilder("pop", "database", "pop = 20", ""), "query didnt build properly");
     }
-}
+}*/

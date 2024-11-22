@@ -359,8 +359,8 @@ public class App
                             + "\n 3 - Top 'N' populated capital cities in a region. \t 4 - Top 'N' populated cities in the world."
                             + "\n 5 - Top 'N' populated cities in a continent \t 6 - Top 'N' populated cities in a region"
                             + "\n 7 - Top 'N' populated cities in a country \t 8 - Top 'N' populated cities in a district"
-                            + "\n 9 - Top 'N' populated countries in the world \t 9 - Top 'N' populated countries in a Continent"
-                            + "\n 10 - top 'N' populated countries in a region."
+                            + "\n 9 - Top 'N' populated countries in the world \t 10 - Top 'N' populated countries in a Continent"
+                            + "\n 11 - top 'N' populated countries in a region."
                     );
                     switch (getMenuInput())
                     {
@@ -533,6 +533,70 @@ public class App
                             + "\n 3 - Capital City Report. \t 4 - Population report (country)"
                             + "\n 5 - Population report (region). \t 6- Population report (continent)"
                     );
+
+                    switch(getMenuInput()){
+                        case 1: // country report
+                            try {
+                                String country = getStringInput();
+                                ResultSet rs = queryHelper(con, "SELECT Code, Name, Continent, Region, Population, Capital  FROM country WHERE Name = '" + country + "'");
+                                if (rs.next()) {
+                                    String code = rs.getString("Code");
+                                    String name = rs.getString("Name");
+                                    String reg = rs.getString("Region");
+                                    String pop = rs.getString("Continent");
+                                    String capID = rs.getString("Capital");
+                                    System.out.println("Code: " + code + "\tName:" + name + "\tRegion:" + reg + "\tPopulation:" + pop + "\tCapital City ID:" + capID);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 2: // city report
+                            try {
+                                String city = getStringInput();
+                                ResultSet rs = queryHelper(con, "SELECT city.Name AS `City`, country.Name AS `Country`, District, city.Population FROM city " +
+                                        "JOIN country ON city.CountryCode = country.Code WHERE city.Name = '" + city + "'");
+                                if (rs.next()) {
+                                    String cityName = rs.getString("City");
+                                    String countryName = rs.getString("Country");
+                                    String district = rs.getString("District");
+                                    String pop = rs.getString("city.Population");
+                                    System.out.println("City: " + cityName + "\tCountry:" + countryName + "\tDistrict:" + district + "\tPopulation:" + pop);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 3: // capital city report
+                            try {
+                                String city = getStringInput();
+                                ResultSet rs = queryHelper(con, "SELECT city.Name, country.Name, District, city.population FROM city " +
+                                        "JOIN country ON city.CountryCode = country.Code WHERE city.Name = '" + city + "' AND country.Capital = city.ID");
+                                if (rs.next()) {
+                                    String cityName = rs.getString("city.Name");
+                                    String countryName = rs.getString("country.Name");
+                                    String pop = rs.getString("city.Population");
+                                    System.out.println("City: " + cityName + " Country:" + countryName + " Population:" + pop);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 4: // capital city report
+                           /* String country = getStringInput();
+                            ResultSet rs = queryHelper(con, "SELECT city.Name, country.name, District, city.population FROM city " +
+                                    "JOIN country ON city.CountryCode = country.Code WHERE Name = '" + city + "' AND country.Capital = city.ID");
+                            if(rs.next()) {
+                                String cityName = rs.getString(0);
+                                String countryName = rs.getString(1);
+                                String pop = rs.getString(2);
+                                System.out.println("City: " + cityName + " Country:" + countryName + " Population:" + pop);
+                            }*/
+                            break;
+                    }
                     break;
 
                 case 0: // exit
