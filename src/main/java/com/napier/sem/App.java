@@ -18,6 +18,7 @@ public class App
 
         String location;
         int delay;
+        String test = "";
         //String user = "";
         //String pass = "";
 
@@ -32,6 +33,7 @@ public class App
         {
             location = args[0];
             delay = Integer.parseInt(args[1]);
+            //test = args[2]; //enables test mode
             //user = args[2];
             //pass = args[3];
         }
@@ -667,6 +669,7 @@ public class App
 
                 default: // error
                     System.out.println("\n\t>>>Invalid selection! Try again.");
+                    exit = true;
                     break;
             }
         }
@@ -725,7 +728,6 @@ public class App
             input = scan.nextInt();
         }
         catch (Exception e) {
-            System.out.println("\n\t>>>Invalid selection!");
             input = -1;
         }
 
