@@ -18,17 +18,24 @@ public class App
 
         String location;
         int delay;
+        //String user = "";
+        //String pass = "";
+
         if(args.length < 1)
         {
             location ="localhost:33060";
             delay = 10000;
+            //user = "root";
+            //pass = "world";
         }
         else
         {
             location = args[0];
             delay = Integer.parseInt(args[1]);
+            //user = args[2];
+            //pass = args[3];
         }
-        Connection con = app.connect(location, delay);
+        Connection con = app.connect(location, delay); //use defUser and pass
         System.out.println("notice: selection is wip and certain queries don't work.\n\n\n---\tWELCOME TO THE DATABASE INTERFACE!\t---");
 
         if(con == null){return;}
@@ -684,10 +691,12 @@ public class App
                     // Wait a bit for db to start
                     Thread.sleep(delay);
                 }
-                System.out.println("Please enter the username for the database: "); //default: root
-                String user = getStringInput();
-                System.out.println("Please enter the password for the database: "); //default: world
-                String password = getStringInput();
+                //System.out.println("Please enter the username for the database: "); //default: root
+                //String user = getStringInput();
+                //System.out.println("Please enter the password for the database: "); //default: world
+                //String password = getStringInput();
+                String user = "root";
+                String password = "world";
                 //jdbc:mysql://docker-mysql/database?autoReconnect=true&useSSL=false
                 // Connect to database
                 Connection con = DriverManager.getConnection("jdbc:mysql://" + location + "/world?allowPublicKeyRetrieval=true", user, password);
