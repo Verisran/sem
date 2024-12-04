@@ -66,7 +66,7 @@ public class App
         return selection;
     }
 
-    //leave each query selection thingy empty "" as such if not needed in the query
+    //leave each query selection thingy empty "" as such if not needed in the query, kinda redundant but ehh.
     public String menuQueryBuilder(String select, String from, String where, String order){
         String final_query = "";
 
@@ -104,8 +104,7 @@ public class App
                         case 1: //world population
                             try {
                                 ResultSet result = queryHelper(con, menuQueryBuilder("SUM(Population)", "country", "",""));
-                                String pop = resultToStringParser(result).get(0);
-                                System.out.println("population of the world is: " + pop + " people\n");
+                                System.out.println("population of the world is: " + resultToStringParser(result) + " people\n");
 
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
@@ -116,9 +115,7 @@ public class App
                                 System.out.println("Please enter a Continent: ");
                                 String continent = getStringInput();
                                 ResultSet result = queryHelper(con, menuQueryBuilder("SUM(Population)","country" ,"Continent = '" + continent + "'", "") );
-                                String pop = resultToStringParser(result).get(0);
-
-                                System.out.println("population of "+ continent + " is: " + pop + " people\n");
+                                System.out.println("population of "+ continent + " is: " + resultToStringParser(result) + " people\n");
 
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
@@ -323,7 +320,7 @@ public class App
                         case 10: // all capital cities in a continent
                             try {
                                 String continent = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE ID = " + " = (SELECT Capital FROM country WHERE Continent = '" + continent + "");
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE ID = " + " = (SELECT Capital FROM country WHERE Continent = '" + continent);
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
@@ -367,8 +364,8 @@ public class App
                     {
                         case 1: //Top 'N' populated capital cities in the world
                             try {
-                                Integer N = Integer.parseInt(getStringInput());
-                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.ID = country.Capital ORDER BY city.Population DESC LIMIT " + N +"");
+                                int N = getMenuInput();
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.ID = country.Capital ORDER BY city.Population DESC LIMIT " + N);
                                 while (result.next()) {
                                     String city = result.getString("city.Name");
                                     System.out.println(city);
@@ -380,9 +377,9 @@ public class App
 
                         case 2: //Top 'N' populated capital cities of a continent
                             try {
-                                Integer N = Integer.parseInt(getStringInput());
+                                int N = getMenuInput();
                                 String continent = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.ID = country.Capital WHERE country.continent = '" + continent + "' ORDER BY city.Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.ID = country.Capital WHERE country.continent = '" + continent + "' ORDER BY city.Population DESC LIMIT " + N);
                                 while (result.next()) {
                                     String city = result.getString("city.Name");
                                     System.out.println(city);
@@ -394,9 +391,9 @@ public class App
 
                         case 3: //Top 'N' populated capital cities in a region
                             try {
-                                Integer N = Integer.parseInt(getStringInput());
+                                int N = getMenuInput();
                                 String region = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city  JOIN country ON city.ID = country.Capital WHERE country.region = '"+region+"' ORDER BY city.Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city  JOIN country ON city.ID = country.Capital WHERE country.region = '"+region+"' ORDER BY city.Population DESC LIMIT " + N);
                                 while (result.next()) {
                                     String city = result.getString("city.Name");
                                     System.out.println(city);
@@ -408,8 +405,8 @@ public class App
 
                         case 4: //Top 'N' populated cities in the world
                             try {
-                                Integer N = Integer.parseInt(getStringInput());
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city ORDER BY Population DESC LIMIT " + N +"");
+                                int N = getMenuInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city ORDER BY Population DESC LIMIT " + N);
                                 while (result.next()) {
                                     String city = result.getString("Name");
                                     System.out.println(city);
@@ -421,9 +418,9 @@ public class App
 
                         case 5://Top 'N' populated cities in a continent
                             try {
-                                Integer N = Integer.parseInt(getStringInput());
+                                int N = getMenuInput();
                                 String continent = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Continent = '" + continent + "' ORDER BY city.Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Continent = '" + continent + "' ORDER BY city.Population DESC LIMIT " + N);
                                 while (result.next()) {
                                     String city = result.getString("city.Name");
                                     System.out.println(city);
@@ -435,9 +432,9 @@ public class App
 
                         case 6://Top 'N' populated cities in a region
                             try {
-                                Integer N = Integer.parseInt(getStringInput());
+                                int N = getMenuInput();
                                 String region = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Region = '"+region+"' ORDER BY city.Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Region = '"+region+"' ORDER BY city.Population DESC LIMIT " + N);
                                 while (result.next()) {
                                     String city = result.getString("city.Name");
                                     System.out.println(city);
@@ -449,9 +446,9 @@ public class App
 
                         case 7://Top 'N' populated cities in a country
                             try {
-                                Integer N = Integer.parseInt(getStringInput());
+                                int N = getMenuInput();
                                 String country = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Name = '"+country+"' ORDER BY city.Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE country.Name = '"+country+"' ORDER BY city.Population DESC LIMIT " + N);
                                 while (result.next()) {
                                     String city = result.getString("city.Name");
                                     System.out.println(city);
@@ -463,9 +460,9 @@ public class App
 
                         case 8://Top 'N' populated cities in a district
                             try {
-                                Integer N = Integer.parseInt(getStringInput());
+                                int N = getMenuInput();
                                 String district = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE District = '"+district+"' ORDER BY Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT Name FROM city WHERE District = '"+district+"' ORDER BY Population DESC LIMIT " + N);
                                 while (result.next()) {
                                     String city = result.getString("Name");
                                     System.out.println(city);
@@ -477,8 +474,8 @@ public class App
 
                         case 9://Top 'N' populated countries in the world
                             try {
-                                Integer N = Integer.parseInt(getStringInput());
-                                ResultSet result = queryHelper(con, "SELECT Name FROM country ORDER BY Population DESC LIMIT " + N +"");
+                                int N = getMenuInput();
+                                ResultSet result = queryHelper(con, "SELECT Name FROM country ORDER BY Population DESC LIMIT " + N);
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
@@ -490,9 +487,9 @@ public class App
 
                         case 10://Top 'N' populated countries in a continent
                             try {
-                                Integer N = Integer.parseInt(getStringInput());
+                                int N = getMenuInput();
                                 String continent = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM country WHERE Continent = '"+continent+"' ORDER BY Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT Name FROM country WHERE Continent = '"+continent+"' ORDER BY Population DESC LIMIT " + N);
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
@@ -504,9 +501,9 @@ public class App
 
                         case 11://Top 'N' populated countries in a region
                             try {
-                                Integer N = Integer.parseInt(getStringInput());
+                                int N = getMenuInput();
                                 String region = getStringInput();
-                                ResultSet result = queryHelper(con, "SELECT Name FROM country WHERE Region = '" + region +"' ORDER BY Population DESC LIMIT " + N +"");
+                                ResultSet result = queryHelper(con, "SELECT Name FROM country WHERE Region = '" + region +"' ORDER BY Population DESC LIMIT " + N);
                                 while (result.next()){
                                     String country = result.getString("Name");
                                     System.out.println(country);
@@ -693,7 +690,7 @@ public class App
                 String password = getStringInput();
                 //jdbc:mysql://docker-mysql/database?autoReconnect=true&useSSL=false
                 // Connect to database
-                Connection con = DriverManager.getConnection("jdbc:mysql://" + location + "/world?allowPublicKeyRetrieval=true&useSSL=false", user, password);
+                Connection con = DriverManager.getConnection("jdbc:mysql://" + location + "/world?allowPublicKeyRetrieval=true", user, password);
                 System.out.println("Successfully connected");
                 return con;
             }
@@ -714,7 +711,16 @@ public class App
     private static int getMenuInput()
     {
         Scanner scan = new Scanner(System.in);
-        return Integer.parseInt((scan.nextLine()));
+        int input;
+        try {
+            input = scan.nextInt();
+        }
+        catch (Exception e) {
+            System.out.println("\n\t>>>Invalid selection!");
+            input = -1;
+        }
+
+        return input;
     }
 
     private static String getStringInput(){
