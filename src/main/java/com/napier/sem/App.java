@@ -526,6 +526,62 @@ public class App
                             + "\n 3 - population of people, people living in cities, and people not living in cities in each country."
                             + "\n 4 - No of people that speak specific languages and their % of world population"
                     );
+                    switch (getMenuInput())
+                    {
+                        case 1://Pop of people, pop of people in cities and not in cities in each continent
+                            try {
+                                ResultSet result = queryHelper(con,"SELECT country.Continent, SUM(country.Population) AS 'Population', " +
+                                        "SUM(city.Population) AS 'People in cities', (SUM(country.Population) - SUM(city.Population)) AS 'People not in cities' " +
+                                        "FROM country JOIN city ON country.Code = city.CountryCode " +
+                                        "GROUP BY country.Continent" );
+                                while(result.next()){
+                                    String continent = result.getString("Continent");
+                                    String people = result.getString("Population");
+                                    String peopleInCities = result.getString("People in cities");
+                                    String peopleNotInCities = result.getString("People not in cities");
+                                    System.out.println("Continent: " + continent + "\tPopulation: " + people + "\tPeople in cities: " + peopleInCities + "\tPeople not in cities: " + peopleNotInCities);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 2://Pop of people, pop of people in cities and not in cities in each region
+                            try {
+                                ResultSet result = queryHelper(con,"SELECT country.Region, SUM(country.Population) AS 'Population', " +
+                                        "SUM(city.Population) AS 'People in cities', (SUM(country.Population) - SUM(city.Population)) AS 'People not in cities' " +
+                                        "FROM country JOIN city ON country.Code = city.CountryCode " +
+                                        "GROUP BY country.Region" );
+                                while(result.next()){
+                                    String region = result.getString("Region");
+                                    String people = result.getString("Population");
+                                    String peopleInCities = result.getString("People in cities");
+                                    String peopleNotInCities = result.getString("People not in cities");
+                                    System.out.println("Region: " + region + "\tPopulation: " + people + "\tPeople in cities: " + peopleInCities + "\tPeople not in cities: " + peopleNotInCities);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+
+                        case 3://Pop of people, pop of people in cities and not in cities in each country
+                            try {
+                                ResultSet result = queryHelper(con,"SELECT country.Name, SUM(country.Population) AS 'Population', " +
+                                        "SUM(city.Population) AS 'People in cities', (SUM(country.Population) - SUM(city.Population)) AS 'People not in cities' " +
+                                        "FROM country JOIN city ON country.Code = city.CountryCode " +
+                                        "GROUP BY country.Name" );
+                                while(result.next()){
+                                    String country = result.getString("Name");
+                                    String people = result.getString("Population");
+                                    String peopleInCities = result.getString("People in cities");
+                                    String peopleNotInCities = result.getString("People not in cities");
+                                    System.out.println("Country Name: " + country + "\tPopulation: " + people + "\tPeople in cities: " + peopleInCities + "\tPeople not in cities: " + peopleNotInCities);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
+                    }
                     break;
 
                 case 5: //reports.
