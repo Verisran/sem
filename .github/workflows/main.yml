@@ -38,7 +38,16 @@ jobs:
           mvn -Dtest=com.napier.sem.AppIntegrationTest test
           docker stop IntegrationTest
           docker rm IntegrationTest
-          docker image rm database 
+          docker image rm database
+
+      - name: CodeCov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # now required for public repos too
+          directory: ./target/site/jacoco
+          flags: Integration Tests # optional
+          verbose: true # optional (default = false)
+          slug: Verisran/sem
 
   build:
     name: Build and Start Using docker compose
