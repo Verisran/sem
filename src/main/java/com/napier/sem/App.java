@@ -608,6 +608,22 @@ public class App
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
                             break;
+
+                        case 4://Number of ppl speaking languages and % from most to least
+                            try {
+                                ResultSet result = queryHelper(con, "SELECT countrylanguage.Language, SUM(country.Population) AS 'Population Number', " +
+                                        "FROM countrylanguage JOIN country ON countrylanguage.CountryCode = country.Code" +
+                                        "WHERE countrylanguage = 'English' OR 'Chinese' OR 'Hindi' OR 'Spanish' OR 'Arabic'" +
+                                        "GROUP BY countrylanguage.Language" +
+                                        "ORDER BY 'Population Number' DESC" );
+                                List<String> resultList = resultToStringParser(result);
+                                for (String s : resultList) {
+                                    System.out.println(s);
+                                }
+                            }catch (Exception e) {
+                                System.out.println("error trying to do statement.." + e.getMessage());
+                            }
+                            break;
                     }
                     break;
 
