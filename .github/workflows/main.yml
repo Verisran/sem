@@ -1,8 +1,6 @@
 name: A workflow for Group33 SEM Database Access App
 on:
   push:
-    branches:
-      - master
 
 jobs:
   UnitTests:
@@ -69,7 +67,9 @@ jobs:
         run: |
           mvn package -DskipTests
           docker compose up --abort-on-container-exit
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - name: Deploy Latest Release
+        if: github.ref == 'refs/heads/master'
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
