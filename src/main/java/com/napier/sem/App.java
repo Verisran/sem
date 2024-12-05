@@ -11,6 +11,9 @@ public class App
 {
     //Parameters
     private boolean test_mode = false;
+    public boolean get_test_mode() {
+        return test_mode;
+    }
 
     //Constructor
     //override test mode

@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 class JunitTest
 {
-
         //assert takes in 3 params: expected result, actual result, message when failed
         static App app;
 
@@ -16,6 +16,12 @@ class JunitTest
         static void init()
         {
             app = new App(true);
+        }
+
+        @Test
+        void testConstructorMode(){
+
+            assertTrue(app.get_test_mode(), "app constructor failed to appropriately set mode");
         }
 
         @Test   //Connection Test
@@ -27,8 +33,8 @@ class JunitTest
 
         @Test
         void testMenuSelect () {
-            assertEquals(651, app.menuSelection(651), "menu selection failed");
-            assertEquals(1,app.menuSelection(1), "menu selection failed");
+            assertEquals(651, app.menuSelection(651), "menu selection 651 failed");
+            assertEquals(1,app.menuSelection(1), "menu selection 1 failed");
         }
 
         @Test
