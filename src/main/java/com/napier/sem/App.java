@@ -50,7 +50,13 @@ public class App
             //pass = args[3];
         }
         Connection con = app.connect(location, delay); //use defUser and pass
-        if(con == null || app.test_mode || using_compose){return;}
+
+        System.out.println("app.test_mode");
+
+        if(con == null || app.test_mode || using_compose){
+            System.out.println("Menu skipped due to: \n-Testmode:" + app.test_mode + "\nConnection failure: " + (con == null) + "\nUsing compose: " + using_compose);
+            return;
+        }
         app.menuQueries(con);
 
 

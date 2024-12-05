@@ -2,13 +2,21 @@ package com.napier.sem;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 
 class JunitTest
 {
 
         //assert takes in 3 params: expected result, actual result, message when failed
-        App app = new App(true);
+        static App app;
+
+        @BeforeAll
+        static void init()
+        {
+            app = new App(true);
+        }
 
         @Test   //Connection Test
         void testResultHandleNull()
@@ -24,8 +32,12 @@ class JunitTest
         }
 
         @Test
-        void testMenuQueryBuilder () {
-            assertEquals("SELECT pop FROM database WHERE pop = 20", app.menuQueryBuilder("pop", "database", "pop = 20", ""), "query didnt build properly");
+        void testMenuQueryBuilderFull() {
+            assertEquals("SELECT pop FROM database WHERE pop = 20 ORDER BY ASC", app.menuQueryBuilder("pop", "database", "pop = 20", "ASC"), "query didnt build properly");
         }
 
+        @Test
+        void testMenuQueryBuilderPartial() {
+            assertEquals("SELECT pop FROM database ORDER BY ASC", app.menuQueryBuilder("pop", "database", "", "ASC"), "query didnt build properly");
+        }
 }

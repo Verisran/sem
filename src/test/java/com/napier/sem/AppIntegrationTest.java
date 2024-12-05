@@ -27,6 +27,12 @@ public class AppIntegrationTest
     }
 
     @Test
+    void testInvalidConnection(){
+        Connection new_con = app.connect("localhost:124144", 100);
+        assertNull(new_con, "Connection wasn't handled appropriately");
+    }
+
+    @Test
     void testQueryReturnData(){
         ResultSet result = app.queryHelper(con, app.menuQueryBuilder("SUM(Population)", "country", "",""));
         long parsedResult = Long.parseLong(app.resultToStringParser(result).get(0));
