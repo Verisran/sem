@@ -8,13 +8,13 @@ class JunitTest
 {
 
         //assert takes in 3 params: expected result, actual result, message when failed
-        App app = new App();
+        App app = new App(true);
 
         @Test   //Connection Test
-        void resultCatchNullTest()
+        void testResultHandleNull()
         {
             ResultSet rs = null;
-            assertTrue("Result Was Null".equals(app.resultToStringParser(rs).get(0)), "Null input wasn't handled properly");
+            assertEquals("Result Was Null", app.resultToStringParser(rs).get(0), "Null input wasn't handled properly");
         }
 
         @Test

@@ -9,6 +9,18 @@ import java.util.Scanner;
 
 public class App
 {
+    //Parameters
+    private boolean test_mode = false;
+
+    //Constructor
+    //override test mode
+    public App(boolean do_test){
+        test_mode = do_test;
+    }
+    //default no change to test_mode
+    public App(){
+    }
+
     //==================================MAIN==================================\\
     public static void main(String[] args)
     {
@@ -38,7 +50,7 @@ public class App
         Connection con = app.connect(location, delay); //use defUser and pass
         System.out.println("notice: selection is wip and certain queries don't work.\n\n\n---\tWELCOME TO THE DATABASE INTERFACE!\t---");
 
-        if(con == null){return;}
+        if(con == null || app.test_mode){return;}
         app.menuQueries(con);
 
 
@@ -667,8 +679,6 @@ public class App
 
                 default: // error
                     System.out.println("\n\t>>>Invalid selection! Try again.");
-                    //TEMPORARY BREAKOUT BECAUSE OF DOCKER BUILD IN GITHUB
-                    exit = true;
                     break;
             }
         }
