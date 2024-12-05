@@ -30,6 +30,8 @@ public class App
 
         String location;
         int delay;
+        //EXIT OVERRIDE FOR DOCKER COMPOSE CUS IT LOOPS INFINITELY THERE!
+        boolean using_compose = true;
         //String user = "";
         //String pass = "";
 
@@ -37,6 +39,7 @@ public class App
         {
             location ="localhost:33060";
             delay = 10000;
+            using_compose = false;
             //user = "root";
             //pass = "world";
         }
@@ -50,7 +53,7 @@ public class App
         Connection con = app.connect(location, delay); //use defUser and pass
         System.out.println("notice: selection is wip and certain queries don't work.\n\n\n---\tWELCOME TO THE DATABASE INTERFACE!\t---");
 
-        if(con == null || app.test_mode){return;}
+        if(con == null || app.test_mode || using_compose){return;}
         app.menuQueries(con);
 
 
