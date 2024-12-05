@@ -25,13 +25,11 @@ public class App
     public static void main(String[] args)
     {
         App app = new App();
-        // introduction to application running
-        System.out.println("---\tGROUP 33 SEM DATABASE INTERFACE\t---");
 
         String location;
         int delay;
         //EXIT OVERRIDE FOR DOCKER COMPOSE CUS IT LOOPS INFINITELY THERE!
-        boolean using_compose = true;
+        boolean using_compose;
         //String user = "";
         //String pass = "";
 
@@ -47,12 +45,11 @@ public class App
         {
             location = args[0];
             delay = Integer.parseInt(args[1]);
+            using_compose = true;
             //user = args[2];
             //pass = args[3];
         }
         Connection con = app.connect(location, delay); //use defUser and pass
-        System.out.println("notice: selection is wip and certain queries don't work.\n\n\n---\tWELCOME TO THE DATABASE INTERFACE!\t---");
-
         if(con == null || app.test_mode || using_compose){return;}
         app.menuQueries(con);
 
@@ -109,6 +106,8 @@ public class App
 
 
     public void menuQueries(Connection con) {
+        System.out.println("---\tGROUP 33 SEM DATABASE INTERFACE\t---");
+        System.out.println("notice: selection is wip and certain queries don't work.\n\n\n---\tWELCOME TO THE DATABASE INTERFACE!\t---");
         boolean exit = false;
         while (!exit)
         {
