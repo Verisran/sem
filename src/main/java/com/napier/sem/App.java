@@ -2,10 +2,15 @@
 
 package com.napier.sem;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.awt.desktop.*;
+import java.net.URI;
 
 public class App
 {
@@ -85,7 +90,8 @@ public class App
                 "\n\t---\tplease make the following selections\t---"
                         + "\n1 - Basic Population Queries\t 2 - All the x in y Queries"
                         + "\n3 - top N queries\t 4 - Complex population queries"
-                        + "\n5 - reports\t 0 - quit\n\n"
+                        + "\n5 - reports\t 6 - report bug" +
+                        "\n0 - quit\n\n"
         );
         System.out.print("> ");
         if(selection == -1) {
@@ -758,7 +764,9 @@ public class App
                             break;
                     }
                     break;
-
+                case 6 : // bug report
+                    ReportBug();
+                    break;
                 case 0: // exit
                     System.out.println("\n\t>>>0\tGood bye.");
                     exit = true;
@@ -894,8 +902,43 @@ public class App
             return queryResult;
         }
         catch (SQLException e) {
-            System.out.println("SOME ERROR HAPPENED.");
+            System.out.println("SOME ERROR HAPPENED." + e.getMessage()); // how helpful...
             return null;
+        }
+    }
+
+    public void ReportBug(){
+        if(Desktop.isDesktopSupported()) {
+            System.out.println("Report Bug title: ");
+            String title = getStringInput();
+            char[] titlechars = title.toCharArray();
+            for (int i = 0; i < title.length() - 1; i++) {
+                if (titlechars[i] == ' ') {
+                    titlechars[i] = '+';
+                }
+            }
+            title = String.valueOf(titlechars);
+            System.out.println("Report Bug description: ");
+            String desc = getStringInput();
+            char[] descchars = desc.toCharArray();
+            for (int i = 0; i < desc.length() - 1; i++) {
+                if (descchars[i] == ' ') {
+                    descchars[i] = '+';
+                }
+            }
+            desc = String.valueOf(descchars);
+            try {
+                Desktop d = Desktop.getDesktop();
+                d.browse(new URI("https://github.com/Verisran/sem/issues/new?labels=bug&title=" + title + "&body=" + desc));
+            } catch (URISyntaxException e) {
+                System.out.println("url syntax error" + e.getMessage());
+            } catch (IOException e) {
+                System.out.println("io exception" + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Something went wrong" + e.getMessage());
+            }
+        } else {
+            System.out.println("Bug report is only desktop only...");
         }
     }
 }
