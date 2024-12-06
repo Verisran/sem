@@ -2,10 +2,15 @@
 
 package com.napier.sem;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.awt.desktop.*;
+import java.net.URI;
 
 public class App
 {
@@ -85,7 +90,8 @@ public class App
                 "\n\t---\tplease make the following selections\t---"
                         + "\n1 - Basic Population Queries\t 2 - All the x in y Queries"
                         + "\n3 - top N queries\t 4 - Complex population queries"
-                        + "\n5 - reports\t 0 - quit\n\n"
+                        + "\n5 - reports\t 6 - report bug" +
+                        "\n0 - quit\n\n"
         );
         System.out.print("> ");
         if(selection == -1) {
@@ -162,7 +168,6 @@ public class App
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
-                            exit = true;
                             break;
                         case 4: //Country population
                             try {
@@ -176,7 +181,6 @@ public class App
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
-                            exit = true;
                             break;
                         case 5: // city population
                             try {
@@ -696,15 +700,15 @@ public class App
                         case 4: //Population report country
                             try {
                                 String country = getStringInput();
-                                ResultSet rs = queryHelper(con, "SELECT country.Name, SUM(country.Population) AS TotalPopulation, CONCAT(ROUND(SUM(city.Population) / SUM(country.Population) * 100 ,1), '%') AS PercentageInCities, " +
-                                        "CONCAT(ROUND((SUM(country.Population) - SUM(city.Population)) / SUM(country.Population) * 100, 1), '%') AS PercentageNotInCities " +
+                                ResultSet rs = queryHelper(con, "SELECT country.Name, country.Population, CONCAT(ROUND(SUM(city.Population) / country.Population * 100 ,1), '%') AS PercentageInCities, " +
+                                        "CONCAT(ROUND((country.Population - SUM(city.Population)) / country.Population * 100, 1), '%') AS PercentageNotInCities " +
                                         "FROM country " +
                                         "JOIN city ON country.Code = city.CountryCode " +
                                         "WHERE country.Name = '" + country + "' " +
-                                        "GROUP BY country.Name");
+                                        "GROUP BY country.Name, country.Population");
                                 if (rs.next()) {
                                     String countryName = rs.getString("country.Name");
-                                    String totalPop = rs.getString("TotalPopulation");
+                                    String totalPop = rs.getString("country.Population");
                                     String perInCities = rs.getString("PercentageInCities");
                                     String perNotInCities = rs.getString("PercentageNotInCities");
                                     System.out.println("Country: " + countryName + " Population: " + totalPop + " Percentage living in cities: " + perInCities + " Percentage not living in cities: " + perNotInCities);
@@ -718,10 +722,11 @@ public class App
                             try {
                                 String region = getStringInput();
                                 ResultSet rs = queryHelper(con, "SELECT country.Region, SUM(country.Population) AS TotalPopulation, " +
-                                        "CONCAT(ROUND(SUM(city.Population) / SUM(country.Population) * 100 ,1), '%') AS PercentageInCities," +
-                                        "CONCAT(ROUND((SUM(country.Population) - SUM(city.Population)) / SUM(country.Population) * 100, 1), '%') AS PercentageNotInCities " +
+                                        "CONCAT(ROUND(SUM(city_population.CityPop) / SUM(country.Population) * 100 ,1), '%') AS PercentageInCities," +
+                                        "CONCAT(ROUND((SUM(country.Population) - SUM(city_population.CityPop)) / SUM(country.Population) * 100, 1), '%') AS PercentageNotInCities " +
                                         "FROM country " +
-                                        "JOIN city ON country.Code = city.CountryCode " +
+                                        "LEFT JOIN \n (SELECT CountryCode, SUM(Population) AS CityPop FROM city GROUP BY CountryCode) city_population\n" +
+                                        "ON \n country.Code = city_population.CountryCode " +
                                         "WHERE country.Region = '" + region + "' " +
                                         "GROUP BY country.Region");
 
@@ -730,7 +735,7 @@ public class App
                                     String totalPop = rs.getString("TotalPopulation");
                                     String perInCities = rs.getString("PercentageInCities");
                                     String perNotInCities = rs.getString("PercentageNotInCities");
-                                    System.out.println("Country: " + countryRegion + " Population: " + totalPop + " Percentage living in cities: " + perInCities + " Percentage not living in cities: " + perNotInCities);
+                                    System.out.println("Region: " + countryRegion + " Population: " + totalPop + " Percentage living in cities: " + perInCities + " Percentage not living in cities: " + perNotInCities);
                                 }
                             }catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
@@ -740,17 +745,18 @@ public class App
                         case 6: //Population report continent
                             try {
                                 String continentInp = getStringInput();
-                                ResultSet rs = queryHelper(con, "SELECT country.Continent, SUM(country.Population) AS TotalPopulation, CONCAT(ROUND(SUM(city.Population) / SUM(country.Population) * 100 ,1), '%') AS PercentageInCities," +
-                                        "CONCAT(ROUND((SUM(country.Population) - SUM(city.Population)) / SUM(country.Population) * 100, 1), '%') AS PercentageNotInCities " +
+                                ResultSet rs = queryHelper(con, "SELECT country.Continent, SUM(country.Population) AS TotalPopulation, CONCAT(ROUND(SUM(city_population.CityPop) / SUM(country.Population) * 100 ,1), '%') AS PercentageInCities," +
+                                        "CONCAT(ROUND((SUM(country.Population) - SUM(city_population.CityPop)) / SUM(country.Population) * 100, 1), '%') AS PercentageNotInCities " +
                                         "FROM country " +
-                                        "JOIN city ON country.Code = city.CountryCode " +
+                                        "LEFT JOIN \n (SELECT CountryCode, SUM(Population) AS CityPop FROM city GROUP BY CountryCode) city_population \n" +
+                                        "ON \n country.Code = city_population.CountryCode " +
                                         "WHERE country.Continent = '" + continentInp + "' GROUP BY country.Continent");
                                 if (rs.next()) {
                                     String continent = rs.getString("country.Continent");
                                     String totalPop = rs.getString("TotalPopulation");
                                     String perInCities = rs.getString("PercentageInCities");
                                     String perNotInCities = rs.getString("PercentageNotInCities");
-                                    System.out.println("Country: " + continent + " Population: " + totalPop + " Percentage living in cities: " + perInCities + " Percentage not living in cities: " + perNotInCities);
+                                    System.out.println("Continent: " + continent + " Population: " + totalPop + " Percentage living in cities: " + perInCities + " Percentage not living in cities: " + perNotInCities);
                                 }
                             }catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
@@ -758,7 +764,9 @@ public class App
                             break;
                     }
                     break;
-
+                case 6 : // bug report
+                    ReportBug();
+                    break;
                 case 0: // exit
                     System.out.println("\n\t>>>0\tGood bye.");
                     exit = true;
@@ -894,8 +902,43 @@ public class App
             return queryResult;
         }
         catch (SQLException e) {
-            System.out.println("SOME ERROR HAPPENED.");
+            System.out.println("SOME ERROR HAPPENED." + e.getMessage()); // how helpful...
             return null;
+        }
+    }
+
+    public void ReportBug(){
+        if(Desktop.isDesktopSupported()) {
+            System.out.println("Report Bug title: ");
+            String title = getStringInput();
+            char[] titlechars = title.toCharArray();
+            for (int i = 0; i < title.length() - 1; i++) {
+                if (titlechars[i] == ' ') {
+                    titlechars[i] = '+';
+                }
+            }
+            title = String.valueOf(titlechars);
+            System.out.println("Report Bug description: ");
+            String desc = getStringInput();
+            char[] descchars = desc.toCharArray();
+            for (int i = 0; i < desc.length() - 1; i++) {
+                if (descchars[i] == ' ') {
+                    descchars[i] = '+';
+                }
+            }
+            desc = String.valueOf(descchars);
+            try {
+                Desktop d = Desktop.getDesktop();
+                d.browse(new URI("https://github.com/Verisran/sem/issues/new?labels=bug&title=" + title + "&body=" + desc));
+            } catch (URISyntaxException e) {
+                System.out.println("url syntax error" + e.getMessage());
+            } catch (IOException e) {
+                System.out.println("io exception" + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Something went wrong" + e.getMessage());
+            }
+        } else {
+            System.out.println("Bug report is only desktop only...");
         }
     }
 }
