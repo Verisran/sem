@@ -168,7 +168,6 @@ public class App
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
-                            exit = true;
                             break;
                         case 4: //Country population
                             try {
@@ -182,7 +181,6 @@ public class App
                             } catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
                             }
-                            exit = true;
                             break;
                         case 5: // city population
                             try {
