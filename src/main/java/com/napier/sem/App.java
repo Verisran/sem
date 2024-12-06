@@ -719,7 +719,7 @@ public class App
                                 String region = getStringInput();
                                 ResultSet rs = queryHelper(con, "SELECT country.Region, SUM(country.Population) AS TotalPopulation, " +
                                         "CONCAT(ROUND(SUM(city.Population) / SUM(country.Population) * 100 ,1), '%') AS PercentageInCities," +
-                                        "CONCAT(ROUND((SUM(country.Population) - SUM(city.Population)) / SUM(country.Population) * 100, 1), '%') AS PercentageNotInCities" +
+                                        "CONCAT(ROUND((SUM(country.Population) - SUM(city.Population)) / SUM(country.Population) * 100, 1), '%') AS PercentageNotInCities " +
                                         "FROM country " +
                                         "JOIN city ON country.Code = city.CountryCode " +
                                         "WHERE country.Region = '" + region + "' " +
@@ -730,7 +730,7 @@ public class App
                                     String totalPop = rs.getString("TotalPopulation");
                                     String perInCities = rs.getString("PercentageInCities");
                                     String perNotInCities = rs.getString("PercentageNotInCities");
-                                    System.out.println("Country: " + countryRegion + " Population: " + totalPop + "Percentage living in cities: " + perInCities + "Percentage not living in cities: " + perNotInCities);
+                                    System.out.println("Country: " + countryRegion + " Population: " + totalPop + " Percentage living in cities: " + perInCities + " Percentage not living in cities: " + perNotInCities);
                                 }
                             }catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
@@ -741,7 +741,7 @@ public class App
                             try {
                                 String continentInp = getStringInput();
                                 ResultSet rs = queryHelper(con, "SELECT country.Continent, SUM(country.Population) AS TotalPopulation, CONCAT(ROUND(SUM(city.Population) / SUM(country.Population) * 100 ,1), '%') AS PercentageInCities," +
-                                        "CONCAT(ROUND((SUM(country.Population) - SUM(city.Population)) / SUM(country.Population) * 100, 1), '%') AS PercentageNotInCities" +
+                                        "CONCAT(ROUND((SUM(country.Population) - SUM(city.Population)) / SUM(country.Population) * 100, 1), '%') AS PercentageNotInCities " +
                                         "FROM country " +
                                         "JOIN city ON country.Code = city.CountryCode " +
                                         "WHERE country.Continent = '" + continentInp + "' GROUP BY country.Continent");
@@ -750,7 +750,7 @@ public class App
                                     String totalPop = rs.getString("TotalPopulation");
                                     String perInCities = rs.getString("PercentageInCities");
                                     String perNotInCities = rs.getString("PercentageNotInCities");
-                                    System.out.println("Country: " + continent + " Population: " + totalPop + "Percentage living in cities: " + perInCities + "Percentage not living in cities: " + perNotInCities);
+                                    System.out.println("Country: " + continent + " Population: " + totalPop + " Percentage living in cities: " + perInCities + " Percentage not living in cities: " + perNotInCities);
                                 }
                             }catch (Exception e) {
                                 System.out.println("error trying to do statement.." + e.getMessage());
